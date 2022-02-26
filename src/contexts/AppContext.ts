@@ -1,11 +1,10 @@
 import { createContext } from "react";
 import { AvailableCurrencyCode } from "../domain/Currency/models/Currency";
-
-type WizardStep = "currency-select" | "manager";
+import { Wizard } from "../domain/Wizard/Wizard";
 
 interface AppState {
   wizard: {
-    active: WizardStep;
+    active: Wizard;
   };
   currency: {
     active: AvailableCurrencyCode | null;

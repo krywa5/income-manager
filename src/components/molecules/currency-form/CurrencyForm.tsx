@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
   useTheme,
 } from "@mui/material";
 import React, { FunctionComponent, useContext, useState } from "react";
@@ -30,33 +31,45 @@ const CurrencyForm: FunctionComponent = () => {
   };
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id={formId}>Waluta</InputLabel>
-      <Select
-        label="Waluta"
-        id={formId}
-        onChange={handleChange}
-        value={currency}
-      >
-        {availableCurrencies.map(({ code, title, symbol }) => (
-          <MenuItem value={code}>
-            {formatCurrencyForSelect(title, symbol)}
-          </MenuItem>
-        ))}
-      </Select>
-      <Button
-        type="submit"
+    <>
+      <Typography
+        variant="h6"
         sx={{
-          mt: spacing(3),
+          mb: spacing(2),
+          alignSelf: "center",
         }}
-        variant="contained"
-        color="secondary"
-        disabled={!currency}
-        onClick={handleClick}
       >
-        Dalej
-      </Button>
-    </FormControl>
+        Wybierz walutę
+      </Typography>
+
+      <FormControl fullWidth>
+        <InputLabel id={formId}>Waluta</InputLabel>
+        <Select
+          label="Waluta"
+          id={formId}
+          onChange={handleChange}
+          value={currency}
+        >
+          {availableCurrencies.map(({ code, title, symbol }) => (
+            <MenuItem value={code}>
+              {formatCurrencyForSelect(title, symbol)}
+            </MenuItem>
+          ))}
+        </Select>
+        <Button
+          type="submit"
+          sx={{
+            mt: spacing(3),
+          }}
+          variant="contained"
+          color="secondary"
+          disabled={!currency}
+          onClick={handleClick}
+        >
+          Dalej
+        </Button>
+      </FormControl>
+    </>
   );
 };
 

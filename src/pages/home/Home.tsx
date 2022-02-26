@@ -1,28 +1,24 @@
-import { Paper, useTheme } from "@mui/material";
 import React, { FunctionComponent, useContext } from "react";
-import CurrencyForm from "../../components/molecules/currency-form/CurrencyForm";
+import CurrencyWizard from "../../components/organisms/currency-wizard/CurrencyWizard";
+import IncomeManagerWizard from "../../components/organisms/income-manager-wizard/IncomeManagerWizard";
 import AppContext from "../../contexts/AppContext";
 import DefaultTemplate from "../../templates/DefaultTemplate";
 
 const Home: FunctionComponent = () => {
-  const { palette, spacing } = useTheme();
   const { wizard } = useContext(AppContext);
+  const activeWizard = wizard.active;
+
+  const isCurrencySelectWizardActive = activeWizard === "currency-select";
+  const isManagerWizardActive = activeWizard === "manager";
+
   return (
     <DefaultTemplate>
-      <Paper
-        elevation={24}
-        sx={{
-          backgroundColor: palette.background.paper,
-          p: spacing(4),
-          mt: spacing(16),
-          ml: "auto",
-          mr: "auto",
-          borderRadius: "20px",
-          minWidth: 500,
-        }}
-      >
-        <CurrencyForm />
-      </Paper>
+      {isCurrencySelectWizardActive && (
+        <CurrencyWizard isActive={activeWizard === "currency-select"} />
+      )}
+      {isManagerWizardActive && (
+        <IncomeManagerWizard isActive={activeWizard === "manager"} />
+      )}
     </DefaultTemplate>
   );
 };
