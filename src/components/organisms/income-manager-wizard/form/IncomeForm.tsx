@@ -1,15 +1,26 @@
 import { InputAdornment, styled } from "@mui/material";
 import { useFormik } from "formik";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useContext, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FunctionComponent,
+  useContext,
+  useState,
+} from "react";
 import CurrencyContext from "../../../../contexts/CurrencyContext";
 import { getCurrencySymbol } from "../../../../domain/Currency/utils/currencyUtils";
 import AutoInputField from "../../../atoms/auto-input-field/AutoInputField";
 import FormBar from "../../../atoms/form-bar/FormBar";
+import HorizontalDivider from "../../../atoms/horizontal-divider/HorizontalDivider";
 import TextField from "../../../atoms/textfield/TextField";
 import incomeManagerValidation from "./validation/income.validation";
 
-const Form = styled("form")({
+const StyledForm = styled("form")({
+  display: "flex",
+  flexDirection: "column",
+});
+
+const InputsContainer = styled("div")({
   display: "flex",
   flexFlow: "row nowrap",
   justifyContent: "space-between",
@@ -27,6 +38,7 @@ const IncomeForm: FunctionComponent = () => {
       income: "",
       date: "",
     },
+    validateOnChange: true,
     validationSchema: incomeManagerValidation,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -39,51 +51,55 @@ const IncomeForm: FunctionComponent = () => {
 
   return (
     <>
-      <Form
+      <StyledForm
         onSubmit={(e) => {
           e.preventDefault();
           formik.handleSubmit(e);
         }}
       >
-        <TextField
-          id="income"
-          type="number"
-          name="income"
-          label="Przychód"
-          value={formik.values.income}
-          onChange={formik.handleChange}
-          error={formik.touched.income && Boolean(formik.errors.income)}
-          helperText={formik.touched.income && formik.errors.income}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {getCurrencySymbol(activeCurrency!)}
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          id="date"
-          name="date"
-          type="date"
-          label="Data"
-          value={formik.values.date}
-          onChange={formik.handleChange}
-          error={formik.touched.date && Boolean(formik.errors.date)}
-          helperText={formik.touched.date && formik.errors.date}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onBlur={() =>
-            formik.validateForm().then((res) => {
-              if (isEmpty(res)) {
-                fetchCurrencyData();
-              }
-            })
-          }
-        />
-      </Form>
-      <FormBar />
+        <InputsContainer>
+          <TextField
+            id="income"
+            type="number"
+            name="income"
+            label="Przychód"
+            value={formik.values.income}
+            onChange={formik.handleChange}
+            error={formik.touched.income && Boolean(formik.errors.income)}
+            helperText={formik.touched.income && formik.errors.income}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {getCurrencySymbol(activeCurrency!)}
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            id="date"
+            name="date"
+            type="date"
+            label="Data"
+            value={formik.values.date}
+            onChange={formik.handleChange}
+            error={formik.touched.date && Boolean(formik.errors.date)}
+            helperText={formik.touched.date && formik.errors.date}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onBlur={() =>
+              formik.validateForm().then((res) => {
+                if (isEmpty(res)) {
+                  fetchCurrencyData();
+                }
+              })
+            }
+          />
+        </InputsContainer>
+
+        <HorizontalDivider />
+      </StyledForm>
+      {/* <FormBar /> */}
       <AutoInputField
         label={`Średni kurs waluty (${activeCurrency})`}
         labelHelper="lorem ipsum"
