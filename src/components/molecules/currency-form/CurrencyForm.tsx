@@ -9,6 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { FunctionComponent, useContext, useState } from "react";
+import CurrencyContext from "../../../contexts/CurrencyContext";
 import WizardContext from "../../../contexts/WizardContext";
 import {
   availableCurrencies,
@@ -36,13 +37,17 @@ const CurrencyForm: FunctionComponent = () => {
   const [currency, setCurrency] = useState<AvailableCurrencyCode | "">("");
   const { spacing } = useTheme();
   const { changeWizard } = useContext(WizardContext);
+  const { changeCurrency } = useContext(CurrencyContext);
 
   const formId = "currency-select";
 
   const handleChange = (e: SelectChangeEvent) =>
     setCurrency(e.target.value as AvailableCurrencyCode);
 
-  const handleClick = () => changeWizard("manager");
+  const handleClick = () => {
+    changeCurrency(currency as AvailableCurrencyCode);
+    changeWizard("manager");
+  };
 
   return (
     <>
@@ -56,7 +61,7 @@ const CurrencyForm: FunctionComponent = () => {
           value={currency}
         >
           {availableCurrencies.map(({ code, title, symbol }) => (
-            <MenuItem value={code}>
+            <MenuItem value={code} key={code}>
               {formatCurrencyForSelect(title, symbol)}
             </MenuItem>
           ))}

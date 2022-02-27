@@ -25,6 +25,7 @@ const App: FunctionComponent = () => {
     setActiveCurrency(currency);
 
   const currencyContextValue: CurrencyState = {
+    source: initCurrencyState.source,
     active: activeCurrency,
     changeCurrency: changeActiveCurrency,
   };

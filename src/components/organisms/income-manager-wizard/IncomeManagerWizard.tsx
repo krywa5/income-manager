@@ -1,9 +1,15 @@
 import React, { FunctionComponent } from "react";
-import WizardProps from "../../../domain/Wizard/Wizard";
 import WizardTemplate from "../../../templates/WizardTemplate";
+import ActiveCurrency from "../../molecules/active-currency/ActiveCurrency";
+import IncomeForm from "./form/IncomeForm";
 
-const IncomeManagerWizard: FunctionComponent<WizardProps> = ({ isActive }) => {
-  return <WizardTemplate isActive>Income wizard</WizardTemplate>;
+const IncomeManagerWizard: FunctionComponent = () => {
+  return (
+    <WizardTemplate>
+      <ActiveCurrency />
+      <IncomeForm />
+    </WizardTemplate>
+  );
 };
 
 export default IncomeManagerWizard;

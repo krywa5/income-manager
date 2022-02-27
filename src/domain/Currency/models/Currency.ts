@@ -6,6 +6,12 @@ interface CurrencyBase {
   title: string; // [dolar]
 }
 
+export const sourceCurrency = {
+  code: "PLN",
+  symbol: "zł",
+  title: "Złoty",
+};
+
 export const availableCurrencies: CurrencyBase[] = [
   {
     code: "USD",

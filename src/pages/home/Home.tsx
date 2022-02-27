@@ -12,12 +12,8 @@ const Home: FunctionComponent = () => {
 
   return (
     <DefaultTemplate>
-      {isCurrencySelectWizardActive && (
-        <CurrencyWizard isActive={activeWizard === "currency-select"} />
-      )}
-      {isManagerWizardActive && (
-        <IncomeManagerWizard isActive={activeWizard === "manager"} />
-      )}
+      {isCurrencySelectWizardActive && <CurrencyWizard />}
+      {isManagerWizardActive && <IncomeManagerWizard />}
     </DefaultTemplate>
   );
 };

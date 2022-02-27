@@ -1,18 +1,11 @@
 import { Grow, Paper, useTheme } from "@mui/material";
 import React, { FunctionComponent } from "react";
 
-interface WizardTemplateProps {
-  isActive: boolean;
-}
-
-const WizardTemplate: FunctionComponent<WizardTemplateProps> = ({
-  children,
-  isActive,
-}) => {
+const WizardTemplate: FunctionComponent = ({ children }) => {
   const { palette, spacing } = useTheme();
 
   return (
-    <Grow in={isActive}>
+    <Grow in>
       <Paper
         elevation={24}
         sx={{
