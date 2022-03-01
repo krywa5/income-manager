@@ -28,3 +28,14 @@ export const availableCurrencies: CurrencyBase[] = [
 export const availableCurrenciesCodes = availableCurrencies.map(
   ({ code }) => code
 );
+
+interface Rate {
+  effectiveDate: string;
+  mid: number;
+  no: string;
+}
+export interface CurrencyData {
+  code: AvailableCurrencyCode;
+  currency: string;
+  rates: Rate[];
+}

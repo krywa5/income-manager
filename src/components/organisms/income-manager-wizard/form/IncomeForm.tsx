@@ -2,13 +2,18 @@ import { InputAdornment, styled } from "@mui/material";
 import { useFormik } from "formik";
 import { isEmpty } from "lodash";
 import React, {
-  ChangeEventHandler,
+  ChangeEvent,
   FunctionComponent,
   useContext,
   useState,
 } from "react";
 import CurrencyContext from "../../../../contexts/CurrencyContext";
-import { getCurrencySymbol } from "../../../../domain/Currency/utils/currencyUtils";
+import GetCurrencyData from "../../../../domain/Currency/queries/GetCurrencyData";
+import {
+  formatCurrencyValue,
+  formatIncome,
+  getCurrencySymbol,
+} from "../../../../domain/Currency/utils/currencyUtils";
 import AutoInputField from "../../../atoms/auto-input-field/AutoInputField";
 import FormBar from "../../../atoms/form-bar/FormBar";
 import HorizontalDivider from "../../../atoms/horizontal-divider/HorizontalDivider";
@@ -27,11 +32,13 @@ const InputsContainer = styled("div")({
 });
 
 const IncomeForm: FunctionComponent = () => {
-  const { active: activeCurrency, source: sourceCurrency } =
-    useContext(CurrencyContext);
+  const {
+    active: activeCurrency,
+    source: sourceCurrency,
+    setCurrencyData,
+    data: currencyData,
+  } = useContext(CurrencyContext);
   const [currencyValue, setCurrencyValue] = useState(0);
-  const [currencyTable, setCurrencyTable] = useState("");
-  const [currencyDate, setCurrencyDate] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -45,9 +52,24 @@ const IncomeForm: FunctionComponent = () => {
     },
   });
 
-  const fetchCurrencyData = () => {
-    console.log("fetching currency data...");
+  const fetchCurrencyData = async () => {
+    if (!activeCurrency) {
+      return console.error("No active currency");
+    }
+
+    const response = await GetCurrencyData(
+      activeCurrency,
+      new Date(formik.values.date)
+    );
+
+    if (response) {
+      setCurrencyData(response);
+      setCurrencyValue(response.rates[0].mid);
+    }
   };
+
+  const handleFetchedCurrencyInputChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setCurrencyValue(Number(e.target.value));
 
   return (
     <>
@@ -63,7 +85,7 @@ const IncomeForm: FunctionComponent = () => {
             type="number"
             name="income"
             label="Przychód"
-            value={formik.values.income}
+            value={formatIncome(Number(formik.values.income))}
             onChange={formik.handleChange}
             error={formik.touched.income && Boolean(formik.errors.income)}
             helperText={formik.touched.income && formik.errors.income}
@@ -73,6 +95,9 @@ const IncomeForm: FunctionComponent = () => {
                   {getCurrencySymbol(activeCurrency!)}
                 </InputAdornment>
               ),
+            }}
+            inputProps={{
+              min: 0,
             }}
           />
           <TextField
@@ -96,21 +121,25 @@ const IncomeForm: FunctionComponent = () => {
             }
           />
         </InputsContainer>
-
         <HorizontalDivider />
       </StyledForm>
-      {/* <FormBar /> */}
       <AutoInputField
         label={`Średni kurs waluty (${activeCurrency})`}
-        labelHelper="lorem ipsum"
+        labelHelper={currencyData?.rates[0].no}
         inputComponent={
           <TextField
-            value={currencyValue}
+            value={formatCurrencyValue(currencyValue)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">{sourceCurrency}</InputAdornment>
               ),
             }}
+            type="number"
+            inputProps={{
+              step: 0.0001,
+              min: 0,
+            }}
+            onChange={handleFetchedCurrencyInputChange}
           />
         }
       />
@@ -118,11 +147,15 @@ const IncomeForm: FunctionComponent = () => {
         label="Wartość przychodu"
         inputComponent={
           <TextField
-            value={currencyValue * Number(formik.values.income)}
+            value={formatIncome(currencyValue * Number(formik.values.income))}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">{sourceCurrency}</InputAdornment>
               ),
+            }}
+            type="number"
+            inputProps={{
+              step: 0.001,
             }}
           />
         }

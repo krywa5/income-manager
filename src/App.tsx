@@ -8,7 +8,10 @@ import WizardContext, {
   initWizardState,
   WizardState,
 } from "./contexts/WizardContext";
-import { AvailableCurrencyCode } from "./domain/Currency/models/Currency";
+import {
+  AvailableCurrencyCode,
+  CurrencyData,
+} from "./domain/Currency/models/Currency";
 import { Wizard } from "./domain/Wizard/Wizard";
 import AppRouting from "./routes/Routing";
 import "./theme/reset.css";
@@ -19,15 +22,19 @@ const App: FunctionComponent = () => {
   const [activeCurrency, setActiveCurrency] = useState(
     initCurrencyState.active
   );
+  const [currencyData, setCurrencyData] = useState(initCurrencyState.data);
 
   const changeActiveWizard = (wizard: Wizard) => setActiveWizard(wizard);
   const changeActiveCurrency = (currency: AvailableCurrencyCode) =>
     setActiveCurrency(currency);
+  const changeCurrencyData = (data: CurrencyData) => setCurrencyData(data);
 
   const currencyContextValue: CurrencyState = {
     source: initCurrencyState.source,
     active: activeCurrency,
     changeCurrency: changeActiveCurrency,
+    data: currencyData,
+    setCurrencyData: changeCurrencyData,
   };
 
   const wizardContextValue: WizardState = {

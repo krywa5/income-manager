@@ -5,7 +5,9 @@ const StyledContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: theme.spacing(2),
+  "&:not(:last-child)": {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const StyledLabelContainer = styled("div")({

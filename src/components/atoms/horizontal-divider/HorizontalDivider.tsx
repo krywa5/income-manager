@@ -6,11 +6,11 @@ interface HorizontalDividerProps {
 }
 
 const StyledContainer = styled("div")({
-  margin: "60px auto",
-  width: "80%",
+  margin: "40px auto 30px",
+  width: "90%",
   position: "relative",
   overflow: "hidden",
-  height: 20,
+  height: 10,
 });
 
 const Shadow = styled("div")({
@@ -25,26 +25,12 @@ const Shadow = styled("div")({
   },
 });
 
-const Text = styled("div")({
-  width: "70px",
-  height: "70px",
-  position: "absolute",
-  bottom: "100%",
-  marginBottom: "-35px",
-  left: "50%",
-  marginLeft: "-25px",
-  borderRadius: "100%",
-  boxShadow: "0 2px 4px #999",
-  background: "white",
-});
-
 const HorizontalDivider: FunctionComponent<HorizontalDividerProps> = ({
   className = "",
 }) => {
   return (
     <StyledContainer className={className}>
       <Shadow />
-      <Text />
     </StyledContainer>
   );
 };
