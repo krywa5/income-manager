@@ -12,10 +12,15 @@ const Theme = createTheme({
       light: "#ffd95a",
       main: "#f9a825",
       dark: "#c17900",
-      contrastText: "#000",
+      contrastText: "#fff",
     },
     background: {
       default: "#eee",
+    },
+  },
+  typography: {
+    subtitle2: {
+      fontSize: "1rem",
     },
   },
 });

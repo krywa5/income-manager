@@ -10,7 +10,7 @@ export const sourceCurrency = {
   code: "PLN",
   symbol: "zł",
   title: "Złoty",
-};
+} as const;
 
 export const availableCurrencies: CurrencyBase[] = [
   {

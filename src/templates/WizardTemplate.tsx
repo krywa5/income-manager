@@ -13,9 +13,7 @@ const WizardTemplate: FunctionComponent = ({ children }) => {
           flexDirection: "column",
           backgroundColor: palette.background.paper,
           p: spacing(4),
-          mt: spacing(16),
-          ml: "auto",
-          mr: "auto",
+          m: `${spacing(16)} auto ${spacing(10)}`,
           borderRadius: "20px",
           minWidth: 500,
         }}

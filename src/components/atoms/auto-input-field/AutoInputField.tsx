@@ -15,22 +15,36 @@ const StyledLabelContainer = styled("div")({
   flexDirection: "column",
 });
 
+const StyledHelpersContainer = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  marginTop: `calc(${theme.spacing(1)} / 4)`,
+}));
+
 interface AutoInputFieldProps {
   label: string;
-  labelHelper?: string;
+  labelHelpers?: string[];
   inputComponent: JSX.Element;
 }
 
 const AutoInputField: FunctionComponent<AutoInputFieldProps> = ({
   label,
-  labelHelper,
+  labelHelpers = [],
   inputComponent,
 }) => {
   return (
     <StyledContainer>
       <StyledLabelContainer>
         <Typography variant="body1">{label}</Typography>
-        {labelHelper && <Typography variant="body2">{labelHelper}</Typography>}
+        {labelHelpers.length ? (
+          <StyledHelpersContainer>
+            {labelHelpers.map((labelHelper) => (
+              <Typography variant="caption" key={labelHelper}>
+                {labelHelper}
+              </Typography>
+            ))}
+          </StyledHelpersContainer>
+        ) : null}
       </StyledLabelContainer>
       {inputComponent}
     </StyledContainer>

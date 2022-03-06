@@ -1,6 +1,14 @@
 import { styled, Typography, useTheme } from "@mui/material";
 import React, { FunctionComponent, useContext } from "react";
 import CurrencyContext from "../../../contexts/CurrencyContext";
+import {
+  availableCurrencies,
+  AvailableCurrencyCode,
+} from "../../../domain/Currency/models/Currency";
+
+interface ActiveCurrencySymbolProps {
+  activeCurrency: AvailableCurrencyCode | null;
+}
 
 const StyledCurrencyCode = styled("span")(({ theme }) => {
   const { palette, spacing } = theme;
@@ -11,6 +19,18 @@ const StyledCurrencyCode = styled("span")(({ theme }) => {
     marginLeft: spacing(1),
   };
 });
+
+const ActiveCurrencySymbol: FunctionComponent<ActiveCurrencySymbolProps> = ({
+  activeCurrency,
+}) => {
+  const symbol = availableCurrencies.find(
+    (curr) => curr.code === activeCurrency
+  )?.symbol;
+
+  if (!symbol) return null;
+
+  return <span>({symbol})</span>;
+};
 
 const ActiveCurrency: FunctionComponent = () => {
   const { active: activeCurrency } = useContext(CurrencyContext);
@@ -25,7 +45,10 @@ const ActiveCurrency: FunctionComponent = () => {
       }}
     >
       Wybrana waluta:
-      <StyledCurrencyCode>{activeCurrency}</StyledCurrencyCode>
+      <StyledCurrencyCode>
+        {activeCurrency}{" "}
+        <ActiveCurrencySymbol activeCurrency={activeCurrency} />
+      </StyledCurrencyCode>
     </Typography>
   );
 };

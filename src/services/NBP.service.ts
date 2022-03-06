@@ -2,17 +2,17 @@ import {
   AvailableCurrencyCode,
   CurrencyData,
 } from "../domain/Currency/models/Currency";
+import { formatDate, getLastWorkingDay } from "../utils/utils";
 
 const URL = "http://api.nbp.pl/api/exchangerates/rates/a";
 
-// const API_URL = `http://api.nbp.pl/api/exchangerates/rates/a/usd/${this.state.currencyValueDate}/?format=json`;
 const createApiRequestUrl = (
   currencyCode: AvailableCurrencyCode,
   date: Date
 ) => {
-  const firstFetchableDate = date; // tutaj walidacja daty
+  const firstFetchableDate = getLastWorkingDay(date);
 
-  const dateFormatted = firstFetchableDate.toISOString().split("T")[0];
+  const dateFormatted = formatDate(firstFetchableDate);
 
   return `${URL}/${currencyCode.toLowerCase()}/${dateFormatted}/?format=json`;
 };
@@ -29,6 +29,11 @@ const fetchCurrencyData = async (
       });
   } catch (err) {
     console.error(err);
+    alert(
+      `Błąd przy pobieraniu waluty. Prawdopodobnie tego dnia (${formatDate(
+        date
+      )}) był dzień wolny od pracy.`
+    );
   }
   return;
 };
