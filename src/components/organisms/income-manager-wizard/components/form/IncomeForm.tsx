@@ -68,7 +68,7 @@ const IncomeForm: FunctionComponent = () => {
     data: currencyData,
     resetCurrencyData,
   } = useContext(CurrencyContext);
-  const { incomes, addIncome, removeIncome } = useContext(IncomesContext);
+  const { addIncome } = useContext(IncomesContext);
   const [currencyValue, setCurrencyValue] = useState<number>(0);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
@@ -99,10 +99,9 @@ const IncomeForm: FunctionComponent = () => {
 
   const formik = useFormik<ManualFormInputs>({
     initialValues: {
-      income: "10000",
-      date: "2020-03-04",
+      income: "",
+      date: "",
     },
-    validateOnChange: true,
     validationSchema: incomeManagerValidation,
     onSubmit: handleFormSubmit,
   });
@@ -142,6 +141,7 @@ const IncomeForm: FunctionComponent = () => {
             label="Przychód"
             value={Number(formik.values.income)}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.income && Boolean(formik.errors.income)}
             helperText={formik.touched.income && formik.errors.income}
             InputProps={{
@@ -169,13 +169,14 @@ const IncomeForm: FunctionComponent = () => {
             InputLabelProps={{
               shrink: true,
             }}
-            onBlur={() =>
+            onBlur={(e: React.FocusEvent<any, Element>) => {
+              formik.handleBlur(e);
               formik.validateForm().then((res) => {
                 if (isEmpty(res)) {
                   fetchCurrencyData();
                 }
-              })
-            }
+              });
+            }}
           />
         </InputsContainer>
         <HorizontalDivider />
