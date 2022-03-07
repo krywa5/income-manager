@@ -11,6 +11,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { toast } from "react-toastify";
 import CurrencyContext from "../../../../../contexts/CurrencyContext";
 import IncomesContext from "../../../../../contexts/IncomesContext";
 import GetCurrencyData from "../../../../../domain/Currency/queries/GetCurrencyData";
@@ -40,7 +41,7 @@ const InputsContainer = styled("div")({
 });
 
 interface ManualFormInputs {
-  income: string;
+  income: string | undefined;
   date: string;
 }
 
@@ -87,6 +88,7 @@ const IncomeForm: FunctionComponent = () => {
     });
 
     addIncome(income);
+    toast.success("Dodano przychód do listy.");
 
     resetForm({
       resetFormikForm,
@@ -99,7 +101,7 @@ const IncomeForm: FunctionComponent = () => {
 
   const formik = useFormik<ManualFormInputs>({
     initialValues: {
-      income: "",
+      income: undefined,
       date: "",
     },
     validationSchema: incomeManagerValidation,

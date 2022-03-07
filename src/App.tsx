@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles";
 import React, { FunctionComponent, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import CurrencyContext, {
   CurrencyState,
   initCurrencyState,
@@ -22,6 +23,7 @@ import { Wizard } from "./domain/Wizard/Wizard";
 import AppRouting from "./routes/Routing";
 import "./theme/reset.css";
 import Theme from "./theme/Theme";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: FunctionComponent = () => {
   const [activeWizard, setActiveWizard] = useState(initWizardState.active);
@@ -72,6 +74,17 @@ const App: FunctionComponent = () => {
     <ThemeProvider theme={Theme}>
       <IncomesContext.Provider value={incomesContextValue}>
         <CurrencyContext.Provider value={currencyContextValue}>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <WizardContext.Provider value={wizardContextValue}>
             <AppRouting />
           </WizardContext.Provider>

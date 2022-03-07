@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { FunctionComponent, useContext } from "react";
+import { toast } from "react-toastify";
 import CurrencyContext from "../../../../../contexts/CurrencyContext";
 import IncomeContext from "../../../../../contexts/IncomesContext";
 import { availableCurrencies } from "../../../../../domain/Currency/models/Currency";
@@ -86,7 +87,12 @@ const IncomeList: FunctionComponent = () => {
                   {formatIncome(sourceIncome)}
                 </TableCell>
                 <TableCell align="center" sx={{ minWidth: "unset" }}>
-                  <ListItemDeleteButton onClick={() => removeIncome(id)} />
+                  <ListItemDeleteButton
+                    onClick={() => {
+                      removeIncome(id);
+                      toast.error("Usunięto pozycję z listy");
+                    }}
+                  />
                 </TableCell>
               </TableRow>
             )
