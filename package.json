@@ -1,5 +1,6 @@
 {
   "name": "income-manager",
+  "homepage": "https://krywa5.github.io/income-manager",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,6 +16,7 @@
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "formik": "^2.2.9",
+    "gh-pages": "^3.2.3",
     "guid-typescript": "^1.0.9",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
@@ -30,7 +32,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
