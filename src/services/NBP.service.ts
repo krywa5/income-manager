@@ -32,7 +32,7 @@ const fetchCurrencyData = async (
     alert(
       `Błąd przy pobieraniu waluty. Prawdopodobnie tego dnia (${formatDate(
         date
-      )}) był dzień wolny od pracy.`
+      )}) był dzień wolny od pracy lub data jest nieprawidłowa.`
     );
   }
   return;

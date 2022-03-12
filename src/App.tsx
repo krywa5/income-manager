@@ -24,6 +24,7 @@ import AppRouting from "./routes/Routing";
 import "./theme/reset.css";
 import Theme from "./theme/Theme";
 import "react-toastify/dist/ReactToastify.css";
+import "./theme/print.css";
 
 const App: FunctionComponent = () => {
   const [activeWizard, setActiveWizard] = useState(initWizardState.active);

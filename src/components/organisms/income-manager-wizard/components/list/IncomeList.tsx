@@ -1,5 +1,4 @@
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -13,27 +12,20 @@ import React, { FunctionComponent, useContext } from "react";
 import { toast } from "react-toastify";
 import CurrencyContext from "../../../../../contexts/CurrencyContext";
 import IncomeContext from "../../../../../contexts/IncomesContext";
-import { availableCurrencies } from "../../../../../domain/Currency/models/Currency";
 import {
-  formatCurrencyForSelect,
-  formatCurrencyValue,
   formatCurrencyValueToPolishFormat,
   formatIncome,
 } from "../../../../../domain/Currency/utils/currencyUtils";
-import GuidString from "../../../../../domain/GuidString";
 import {
   formatDate,
   formatResponseDateToLocale,
 } from "../../../../../utils/utils";
-import ActiveCurrency from "../../../../molecules/active-currency/ActiveCurrency";
+import NonPrintable from "../../../../atoms/non-printable/NonPrintable";
 import ListItemDeleteButton from "./components/ListItemDeleteButton";
 
 const IncomeList: FunctionComponent = () => {
-  const {
-    active: activeCurrency,
-    source: sourceCurrency,
-    data: currencyData,
-  } = useContext(CurrencyContext);
+  const { active: activeCurrency, source: sourceCurrency } =
+    useContext(CurrencyContext);
   const { incomes, removeIncome } = useContext(IncomeContext);
 
   const getIncomesSum = (type: "sourceIncome" | "abroadIncome") =>
@@ -57,7 +49,9 @@ const IncomeList: FunctionComponent = () => {
             <TableCell align="center">Kurs waluty</TableCell>
             <TableCell align="right">Przychód {activeCurrency}</TableCell>
             <TableCell align="right">Przychód {sourceCurrency}</TableCell>
-            <TableCell align="center"></TableCell>
+            <NonPrintable>
+              <TableCell align="center"></TableCell>
+            </NonPrintable>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -86,14 +80,16 @@ const IncomeList: FunctionComponent = () => {
                 <TableCell align="right">
                   {formatIncome(sourceIncome)}
                 </TableCell>
-                <TableCell align="center" sx={{ minWidth: "unset" }}>
-                  <ListItemDeleteButton
-                    onClick={() => {
-                      removeIncome(id);
-                      toast.error("Usunięto pozycję z listy");
-                    }}
-                  />
-                </TableCell>
+                <NonPrintable>
+                  <TableCell align="center" sx={{ minWidth: "unset" }}>
+                    <ListItemDeleteButton
+                      onClick={() => {
+                        removeIncome(id);
+                        toast.error("Usunięto pozycję z listy");
+                      }}
+                    />
+                  </TableCell>
+                </NonPrintable>
               </TableRow>
             )
           )}
@@ -117,7 +113,9 @@ const IncomeList: FunctionComponent = () => {
                 {formatIncome(getIncomesSum("sourceIncome"), sourceCurrency)}
               </Typography>
             </TableCell>
-            <TableCell align="center" />
+            <NonPrintable>
+              <TableCell align="center" />
+            </NonPrintable>
           </TableRow>
         </TableBody>
       </Table>

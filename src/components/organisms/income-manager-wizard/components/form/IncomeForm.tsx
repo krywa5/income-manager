@@ -1,10 +1,8 @@
 import { Button, InputAdornment, styled } from "@mui/material";
 import { FormikHelpers, useFormik } from "formik";
-import { Guid } from "guid-typescript";
 import { isEmpty } from "lodash";
 import React, {
   ChangeEvent,
-  FormEvent,
   FunctionComponent,
   SetStateAction,
   useContext,
@@ -17,11 +15,10 @@ import IncomesContext from "../../../../../contexts/IncomesContext";
 import GetCurrencyData from "../../../../../domain/Currency/queries/GetCurrencyData";
 import {
   formatCurrencyValue,
-  formatIncome,
   formatIncomeForInput,
   getCurrencySymbol,
 } from "../../../../../domain/Currency/utils/currencyUtils";
-import Income, { createIncome } from "../../../../../domain/Income/Income";
+import { createIncome } from "../../../../../domain/Income/Income";
 import useComponentDidMount from "../../../../../hooks/useComponentDidMount";
 import { formatResponseDateToLocale } from "../../../../../utils/utils";
 import AutoInputField from "../../../../atoms/auto-input-field/AutoInputField";
@@ -32,6 +29,12 @@ import incomeManagerValidation from "./validation/income.validation";
 const StyledForm = styled("form")({
   display: "flex",
   flexDirection: "column",
+
+  "@media print": {
+    "&": {
+      display: "none",
+    },
+  },
 });
 
 const InputsContainer = styled("div")({
@@ -128,130 +131,126 @@ const IncomeForm: FunctionComponent = () => {
     setCurrencyValue(Number(e.target.value));
 
   return (
-    <>
-      <StyledForm
-        onSubmit={(e) => {
-          e.preventDefault();
-          formik.handleSubmit(e);
-        }}
-      >
-        <InputsContainer>
+    <StyledForm
+      onSubmit={(e) => {
+        e.preventDefault();
+        formik.handleSubmit(e);
+      }}
+    >
+      <InputsContainer>
+        <TextField
+          id="income"
+          type="number"
+          name="income"
+          label="Przychód"
+          value={formik.values.income ? Number(formik.values.income) : ""}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.income && Boolean(formik.errors.income)}
+          helperText={formik.touched.income && formik.errors.income}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {getCurrencySymbol(activeCurrency!)}
+              </InputAdornment>
+            ),
+          }}
+          inputProps={{
+            min: 0,
+            step: 0.01,
+          }}
+          inputRef={firstInputRef}
+        />
+        <TextField
+          id="date"
+          name="date"
+          type="date"
+          label="Data"
+          value={formik.values.date}
+          onChange={formik.handleChange}
+          error={formik.touched.date && Boolean(formik.errors.date)}
+          helperText={formik.touched.date && formik.errors.date}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onBlur={(e: React.FocusEvent<any, Element>) => {
+            formik.handleBlur(e);
+            formik.validateForm().then((res) => {
+              if (isEmpty(res)) {
+                fetchCurrencyData();
+              }
+            });
+          }}
+        />
+      </InputsContainer>
+      <HorizontalDivider />
+      <AutoInputField
+        label={`Średni kurs waluty (${activeCurrency})`}
+        labelHelpers={
+          currencyData
+            ? [
+                `${
+                  currencyData.rates[0].no
+                }, z dn. ${formatResponseDateToLocale(
+                  currencyData.rates[0].effectiveDate
+                )}`,
+              ]
+            : []
+        }
+        inputComponent={
           <TextField
-            id="income"
-            type="number"
-            name="income"
-            label="Przychód"
-            value={Number(formik.values.income)}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.income && Boolean(formik.errors.income)}
-            helperText={formik.touched.income && formik.errors.income}
+            value={formatCurrencyValue(currencyValue)}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
-                  {getCurrencySymbol(activeCurrency!)}
-                </InputAdornment>
+                <InputAdornment position="end">{sourceCurrency}</InputAdornment>
               ),
             }}
+            type="number"
             inputProps={{
+              step: 0.0001,
               min: 0,
-              step: 0.01,
             }}
-            inputRef={firstInputRef}
+            onChange={handleFetchedCurrencyInputChange}
           />
+        }
+      />
+      <AutoInputField
+        label="Wartość przychodu"
+        inputComponent={
           <TextField
-            id="date"
-            name="date"
-            type="date"
-            label="Data"
-            value={formik.values.date}
-            onChange={formik.handleChange}
-            error={formik.touched.date && Boolean(formik.errors.date)}
-            helperText={formik.touched.date && formik.errors.date}
-            InputLabelProps={{
-              shrink: true,
+            value={formatIncomeForInput(
+              formik.values.income
+                ? currencyValue * Number(formik.values.income)
+                : 0
+            )}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">{sourceCurrency}</InputAdornment>
+              ),
             }}
-            onBlur={(e: React.FocusEvent<any, Element>) => {
-              formik.handleBlur(e);
-              formik.validateForm().then((res) => {
-                if (isEmpty(res)) {
-                  fetchCurrencyData();
-                }
-              });
+            type="number"
+            inputProps={{
+              step: 0.001,
             }}
           />
-        </InputsContainer>
-        <HorizontalDivider />
-        <AutoInputField
-          label={`Średni kurs waluty (${activeCurrency})`}
-          labelHelpers={
-            currencyData
-              ? [
-                  `${
-                    currencyData.rates[0].no
-                  }, z dn. ${formatResponseDateToLocale(
-                    currencyData.rates[0].effectiveDate
-                  )}`,
-                ]
-              : []
-          }
-          inputComponent={
-            <TextField
-              value={formatCurrencyValue(currencyValue)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {sourceCurrency}
-                  </InputAdornment>
-                ),
-              }}
-              type="number"
-              inputProps={{
-                step: 0.0001,
-                min: 0,
-              }}
-              onChange={handleFetchedCurrencyInputChange}
-            />
-          }
-        />
-        <AutoInputField
-          label="Wartość przychodu"
-          inputComponent={
-            <TextField
-              value={formatIncomeForInput(
-                currencyValue * Number(formik.values.income)
-              )}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {sourceCurrency}
-                  </InputAdornment>
-                ),
-              }}
-              type="number"
-              inputProps={{
-                step: 0.001,
-              }}
-            />
-          }
-        />
-        <Button
-          type="submit"
-          color="secondary"
-          sx={{
-            mb: 1,
-            mt: 2,
-          }}
-          disabled={
-            !currencyValue || !formik.values.date || !formik.values.income
-          }
-          variant="contained"
-          size="large"
-        >
-          Dodaj przychód do listy
-        </Button>
-      </StyledForm>
-    </>
+        }
+      />
+      <Button
+        type="submit"
+        color="secondary"
+        sx={{
+          mb: 1,
+          mt: 2,
+        }}
+        disabled={
+          !currencyValue || !formik.values.date || !formik.values.income
+        }
+        variant="contained"
+        size="large"
+      >
+        Dodaj przychód do listy
+      </Button>
+    </StyledForm>
   );
 };
 
