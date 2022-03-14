@@ -1,4 +1,4 @@
-import NBP from "../../../services/NBP.service";
+import NBP from "../../../services/nbp/NBP.service";
 import { AvailableCurrencyCode } from "../models/Currency";
 
 async function GetCurrencyData(

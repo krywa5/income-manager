@@ -1,8 +1,9 @@
 import {
   AvailableCurrencyCode,
   CurrencyData,
-} from "../domain/Currency/models/Currency";
-import { formatDate, getLastWorkingDay } from "../utils/utils";
+} from "../../domain/Currency/models/Currency";
+import { formatDate, getLastWorkingDay } from "../../utils/utils";
+import CORSProxy from "../cors-proxy/CORSProxy.service";
 
 const URL = "http://api.nbp.pl/api/exchangerates/rates/a";
 
@@ -14,7 +15,15 @@ const createApiRequestUrl = (
 
   const dateFormatted = formatDate(firstFetchableDate);
 
-  return `${URL}/${currencyCode.toLowerCase()}/${dateFormatted}/?format=json`;
+  return `${CORSProxy.enhance(
+    URL
+  )}/${currencyCode.toLowerCase()}/${dateFormatted}/?format=json`;
+};
+
+const requestConfig: RequestInit = {
+  headers: {
+    Origin: "null",
+  },
 };
 
 const fetchCurrencyData = async (
@@ -22,7 +31,7 @@ const fetchCurrencyData = async (
   date: Date
 ): Promise<CurrencyData | undefined> => {
   try {
-    return await fetch(createApiRequestUrl(currencyCode, date))
+    return await fetch(createApiRequestUrl(currencyCode, date), requestConfig)
       .then((response) => response.json())
       .then((data) => {
         return data;

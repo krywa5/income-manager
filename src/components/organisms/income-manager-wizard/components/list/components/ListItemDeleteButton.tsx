@@ -1,7 +1,6 @@
-import { Button, Tooltip, useTheme } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import React, { FunctionComponent } from "react";
-import GuidString from "../../../../../../domain/GuidString";
 
 interface ListItemDeleteButtonProps {
   onClick: () => void;

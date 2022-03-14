@@ -20,11 +20,11 @@ import {
 import GuidString from "./domain/GuidString";
 import Income from "./domain/Income/Income";
 import { Wizard } from "./domain/Wizard/Wizard";
-import AppRouting from "./routes/Routing";
 import "./theme/reset.css";
 import Theme from "./theme/Theme";
 import "react-toastify/dist/ReactToastify.css";
 import "./theme/print.css";
+import Home from "./pages/home/Home";
 
 const App: FunctionComponent = () => {
   const [activeWizard, setActiveWizard] = useState(initWizardState.active);
@@ -87,7 +87,7 @@ const App: FunctionComponent = () => {
             pauseOnHover
           />
           <WizardContext.Provider value={wizardContextValue}>
-            <AppRouting />
+            <Home />
           </WizardContext.Provider>
         </CurrencyContext.Provider>
       </IncomesContext.Provider>

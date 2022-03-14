@@ -16,6 +16,7 @@ const DefaultTemplate: FunctionComponent<DefaultTemplateProps> = ({
         display: "flex",
         flexDirection: "column",
       }}
+      className="test12"
     >
       {children}
     </Box>
