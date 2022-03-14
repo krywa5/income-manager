@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/income-manager/static/css/main.6b471723.css",
-    "main.js": "/income-manager/static/js/main.5fe22231.js",
+    "main.js": "/income-manager/static/js/main.bf43bea6.js",
     "index.html": "/income-manager/index.html",
     "main.6b471723.css.map": "/income-manager/static/css/main.6b471723.css.map",
-    "main.5fe22231.js.map": "/income-manager/static/js/main.5fe22231.js.map"
+    "main.bf43bea6.js.map": "/income-manager/static/js/main.bf43bea6.js.map"
   },
   "entrypoints": [
     "static/css/main.6b471723.css",
-    "static/js/main.5fe22231.js"
+    "static/js/main.bf43bea6.js"
   ]
 }
