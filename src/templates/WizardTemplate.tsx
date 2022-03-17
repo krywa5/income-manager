@@ -44,18 +44,14 @@ const WizardTemplate: FunctionComponent<WizardTemplateProps> = ({
           flexDirection: "column",
           backgroundColor: palette.background.paper,
           p: spacing(4),
-          m: `${spacing(16)} auto ${spacing(10)}`,
+          m: `6vh auto ${spacing(10)}`,
           borderRadius: "20px",
           minWidth: 500,
           overflow: "hidden",
 
           "@media print": {
-            "&": {
-              width: `calc(100% - 2*${spacing(4)} - 2*${spacing(4)})`,
-              // boxShadow: "0px 0px 1px 0px black",
-              boxShadow: "unset",
-              // border: "1px solid black",
-            },
+            width: "100%",
+            boxShadow: "unset",
           },
         }}
       >

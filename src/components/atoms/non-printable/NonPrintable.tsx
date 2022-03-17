@@ -9,9 +9,7 @@ const NonPrintable: FunctionComponent<NonPrintableProps> = ({ children }) => {
     sx: {
       ...children.props.sx,
       "@media print": {
-        "&": {
-          display: "none",
-        },
+        display: "none",
       },
     },
   });

@@ -1,6 +1,6 @@
 # Currently supported currencies:
 
-EUR, USD
+EUR, USD, GBP, NOK, SEK, CAD, CHF, UAH, JPY
 
 # Demo
 

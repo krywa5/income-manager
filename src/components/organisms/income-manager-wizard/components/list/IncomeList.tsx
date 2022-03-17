@@ -1,12 +1,14 @@
 import {
   Paper,
+  styled,
   Table,
   TableBody,
-  TableCell,
+  TableCell as TableCellBase,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React, { FunctionComponent, useContext } from "react";
 import { toast } from "react-toastify";
@@ -23,10 +25,18 @@ import {
 import NonPrintable from "../../../../atoms/non-printable/NonPrintable";
 import ListItemDeleteButton from "./components/ListItemDeleteButton";
 
+const TableCell = styled(TableCellBase)(({ theme }) => ({
+  "@media print": {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
+}));
+
 const IncomeList: FunctionComponent = () => {
   const { active: activeCurrency, source: sourceCurrency } =
     useContext(CurrencyContext);
   const { incomes, removeIncome } = useContext(IncomeContext);
+  const { spacing } = useTheme();
 
   const getIncomesSum = (type: "sourceIncome" | "abroadIncome") =>
     incomes.reduce((acc: number, current) => {
@@ -38,9 +48,17 @@ const IncomeList: FunctionComponent = () => {
       component={Paper}
       sx={{
         marginTop: 2,
+        minWidth: 800,
+
+        "@media print": {
+          width: `calc(100% + 2*${spacing(4)})`,
+          marginLeft: `-${spacing(4)}`,
+          marginRight: `-${spacing(4)}`,
+          minWidth: "unset",
+        },
       }}
     >
-      <Table sx={{ minWidth: 800 }} aria-label="Income table">
+      <Table aria-label="Income table">
         <TableHead>
           <TableRow>
             <TableCell>Lp.</TableCell>

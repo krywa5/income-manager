@@ -26,6 +26,11 @@ const irregularDaysOffInPoland = [
   "2021-04-05", // Lany poniedziałek
   "2021-05-23", // Zielone Świątki
   "2021-06-03", // Boże Ciało
+  // 2022
+  "2022-04-17",
+  "2022-04-18",
+  "2022-06-05",
+  "2022-06-16",
 ];
 
 const isDateWeekendOrDayOff = (date: Date) => {

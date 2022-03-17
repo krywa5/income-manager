@@ -31,9 +31,7 @@ const StyledForm = styled("form")({
   flexDirection: "column",
 
   "@media print": {
-    "&": {
-      display: "none",
-    },
+    display: "none",
   },
 });
 
@@ -91,7 +89,7 @@ const IncomeForm: FunctionComponent = () => {
     });
 
     addIncome(income);
-    toast.success("Dodano przychód do listy.");
+    toast.success("Przychód dodany do listy.");
 
     resetForm({
       resetFormikForm,
@@ -175,7 +173,7 @@ const IncomeForm: FunctionComponent = () => {
           }}
           onBlur={(e: React.FocusEvent<any, Element>) => {
             formik.handleBlur(e);
-            formik.validateForm().then((res) => {
+            formik.validateField("date").then((res) => {
               if (isEmpty(res)) {
                 fetchCurrencyData();
               }

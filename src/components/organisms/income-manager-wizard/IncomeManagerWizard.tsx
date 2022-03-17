@@ -19,6 +19,10 @@ const StyledCurrencyCode = styled("span")(({ theme }) => {
     fontWeight: 700,
     color: palette.primary.dark,
     marginLeft: spacing(1),
+
+    "@media print": {
+      color: palette.text.primary,
+    },
   };
 });
 

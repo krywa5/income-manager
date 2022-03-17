@@ -8,7 +8,7 @@ const PrintButton: FunctionComponent = () => {
   };
 
   return (
-    <CTAButton tooltip="Drukuj" onClick={printHandler}>
+    <CTAButton onClick={printHandler}>
       <LocalPrintshopOutlinedIcon fontSize="large" />
     </CTAButton>
   );
