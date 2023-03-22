@@ -3,9 +3,8 @@ import {
   CurrencyData,
 } from "../../domain/Currency/models/Currency";
 import { formatDate, getLastWorkingDay } from "../../utils/utils";
-import CORSProxy from "../cors-proxy/CORSProxy.service";
 
-const URL = "http://api.nbp.pl/api/exchangerates/rates/a";
+const URL = "https://api.nbp.pl/api/exchangerates/rates/a";
 
 const createApiRequestUrl = (
   currencyCode: AvailableCurrencyCode,
@@ -15,9 +14,7 @@ const createApiRequestUrl = (
 
   const dateFormatted = formatDate(firstFetchableDate);
 
-  return `${CORSProxy.enhance(
-    URL
-  )}/${currencyCode.toLowerCase()}/${dateFormatted}/?format=json`;
+  return `${URL}/${currencyCode.toLowerCase()}/${dateFormatted}/?format=json`;
 };
 
 const requestConfig: RequestInit = {
