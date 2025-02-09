@@ -28,11 +28,12 @@ const fetchCurrencyData = async (
   date: Date
 ): Promise<CurrencyData | undefined> => {
   try {
-    return await fetch(createApiRequestUrl(currencyCode, date), requestConfig)
-      .then((response) => response.json())
-      .then((data) => {
-        return data;
-      });
+    const response = await fetch(
+      createApiRequestUrl(currencyCode, date),
+      requestConfig
+    );
+    const parsed = await response.json();
+    return parsed;
   } catch (err) {
     console.error(err);
     alert(
